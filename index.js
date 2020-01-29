@@ -157,7 +157,9 @@ function processContains(item, list, callback) {
  * should return 3.
 */
 function processDuplicateFree(list, callback) {
-  return callback(list.filter())}
+  const newSet = new Set(list);
+  return callback(Array.from(newSet))
+}
 
 /////////////// HIGHER-ORDER ARRAY METHODS ///////////////
 /////////////// HIGHER-ORDER ARRAY METHODS ///////////////
@@ -178,6 +180,11 @@ function processDuplicateFree(list, callback) {
  * The full names appear in the array in the same order the runners appear in the `runners` array.
 */
 function getFullNames(runners) {
+  let fullName = [];
+  runners.forEach((runnerList) =>{
+   fullName.push(`${runnerList.last_name}, ${runnerList.first_name}`);
+  });
+  return fullName;
 }
 
 /**
@@ -193,8 +200,11 @@ function getFullNames(runners) {
  * The first names appear in the array in the same order the runners appear in the `runners` array.
 */
 
-function firstNamesAllCaps(/* CODE HERE */) {
-  /* CODE HERE */
+function firstNamesAllCaps(runners) {
+  let newArr = runners.map((runner)=>{
+    return runner.first_name.toUpperCase()
+  });
+  return newArr;
 }
 
 /**
@@ -210,8 +220,12 @@ function firstNamesAllCaps(/* CODE HERE */) {
  * @returns an array containing only the runners that use the given `tShirtSize`.
  * The runners in the array appear in the same order they appear in the `runners` array.
 */
-function getRunnersByTShirtSize(/* CODE HERE */) {
-  /* CODE HERE */
+function getRunnersByTShirtSize(runners, tShirtSize) {
+  let newArr =  
+  runners.filter((runner)=>{
+  return runner.shirt_size === tShirtSize
+  });
+  return newArr;
 }
 
 /**
@@ -224,8 +238,11 @@ function getRunnersByTShirtSize(/* CODE HERE */) {
  * @param runners array of runners like the one inside the /data/runners.js file.
  * @returns a number which is the sum of the donations by all runners.
 */
-function tallyUpDonations(/* CODE HERE */) {
-  /* CODE HERE */
+function tallyUpDonations(runners) {
+  const tallyDonos = runners.reduce((accumulator, currentValue)=>{
+    return accumulator + currentValue.donation ;
+  }, 0);
+  return tallyDonos;
 }
 
 /////////////// CLOSURES ///////////////
@@ -244,15 +261,11 @@ function tallyUpDonations(/* CODE HERE */) {
  * counter() // should return 2
  * etc
 */
-function counterMaker() {
-  // BROKEN CODE STARTS
-  const count = 0;
-  function counter() {
-    ++count
-  }
-  
-  // BROKEN CODE ENDS
-}
+function counterMaker(){
+  let count = 0;
+  return function counter() {
+  return count++;
+}}
 
 /**
  * ### Challenge `counterMakerWithLimit`
@@ -274,8 +287,18 @@ function counterMaker() {
  * counter() // should return 0
  * etc
 */
-function counterMakerWithLimit(/* CODE HERE */) {
-  /* CODE HERE */
+function counterMakerWithLimit(max) {
+  let count = -1;
+
+  return function counter(){
+    if(count >= max){
+      count = 0;
+    }else{
+      count++;
+    }
+    return count;
+  }
+
 }
 
 /////////////// END OF CHALLENGE ///////////////
